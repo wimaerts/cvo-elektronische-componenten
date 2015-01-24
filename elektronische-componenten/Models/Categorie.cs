@@ -12,5 +12,15 @@ namespace elektronische_componenten.Models
 
         [Required]
         public string Naam { get; set; }
+
+        public Categorie()
+        {
+
+        }
+
+        public Categorie(string naam)
+        {
+            this.Naam = naam;
+        }
     }
 }

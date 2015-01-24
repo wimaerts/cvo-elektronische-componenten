@@ -9,12 +9,30 @@ namespace elektronische_componenten.Models
     public class Component
     {
         public int Id { get; set; }
-        public Categorie Categorie { get; set; }
+        public virtual Categorie Categorie { get; set; }
 
         [Required]
         public string Naam { get; set; }
-        public string Datasheet { get; set; }
+
+        [DataType(DataType.Url)]
+        [Display(Name = "Product link")]
+        public string Datasheet { get; set; }  
+      
         public int Aantal { get; set; }
-        public decimal Aankoopprijs { get; set; }
+        public double Aankoopprijs { get; set; }
+
+        public Component()
+        {
+
+        }
+
+        public Component(string naam, Categorie categorie, string datasheet, int aantal, double aankoopprijs)
+        {
+            this.Naam = naam;
+            this.Categorie = categorie;
+            this.Datasheet = datasheet;
+            this.Aantal = aantal;
+            this.Aankoopprijs = aankoopprijs;
+        }
     }
 }
