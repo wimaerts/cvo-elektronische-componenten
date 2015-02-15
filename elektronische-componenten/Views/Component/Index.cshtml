@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Overzicht componenten</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,16 +12,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Naam)
+            @Html.ActionLink("Naam", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Datasheet)
+            @Html.ActionLink("Categorie", "Index", new { sortOrder = ViewBag.CategorieSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Aantal)
+            @Html.ActionLink("Aantal", "Index", new { sortOrder = ViewBag.AantalSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Aankoopprijs)
+            @Html.ActionLink("Aankoopprijs", "Index", new { sortOrder = ViewBag.PrijsSortParm })
         </th>
         <th></th>
     </tr>
@@ -29,10 +29,12 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Naam)
+            <a href="@item.Datasheet">
+                @Html.DisplayFor(modelItem => item.Naam)
+            </a>            
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Datasheet)
+            @Html.DisplayFor(modelItem => item.Categorie.Naam)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Aantal)

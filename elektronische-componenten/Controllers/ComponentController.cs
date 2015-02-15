@@ -16,9 +16,45 @@ namespace elektronische_componenten.Controllers
         private ComponentContext db = new ComponentContext();
 
         // GET: Component
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Componenten.ToList());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.CategorieSortParm = (sortOrder=="cat_asc" || String.IsNullOrEmpty(sortOrder)) ? "cat_desc" : "cat_asc";
+            ViewBag.AantalSortParm = (sortOrder == "aantal_asc" || String.IsNullOrEmpty(sortOrder)) ? "aantal_desc" : "aantal_asc";
+            ViewBag.PrijsSortParm = (sortOrder == "prijs_asc" || String.IsNullOrEmpty(sortOrder)) ? "prijs_desc" : "prijs_asc";
+
+            var componenten = from c in db.Componenten
+                              select c;
+
+            switch(sortOrder)
+            {
+                case "name_desc":
+                    componenten = componenten.OrderByDescending(c => c.Naam);
+                    break;
+                case "cat_asc":
+                    componenten = componenten.OrderBy(c => c.Categorie.Naam);
+                    break;
+                case "cat_desc":
+                    componenten = componenten.OrderByDescending(c => c.Categorie.Naam);
+                    break;
+                case "aantal_asc":
+                    componenten = componenten.OrderBy(c => c.Aantal);
+                    break;
+                case "aantal_desc":
+                    componenten = componenten.OrderByDescending(c => c.Aantal);
+                    break;
+                case "prijs_asc":
+                    componenten = componenten.OrderBy(c => c.Aankoopprijs);
+                    break;
+                case "prijs_desc":
+                    componenten = componenten.OrderByDescending(c => c.Aankoopprijs);
+                    break;
+                default:
+                    componenten = componenten.OrderBy(c => c.Naam);
+                    break;
+            }
+
+            return View(componenten.ToList());
         }
 
         // GET: Component/Details/5
