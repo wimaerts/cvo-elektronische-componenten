@@ -20,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Naam, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Naam)
+                @Html.TextBoxFor(model => model.Naam, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Naam)
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="CategorieId">Categorie</label>
             <div class="col-md-10">
-                @Html.DropDownList("CategorieList", String.Empty)
+                @Html.DropDownList("categorieId", (SelectList)ViewBag.CategorieList, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Categorie.Id)
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Datasheet, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Datasheet)
+                @Html.TextBoxFor(model => model.Datasheet, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Datasheet)
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Aantal, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Aantal)
+                @Html.TextBoxFor(model => model.Aantal, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Aantal)
             </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Aankoopprijs, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Aankoopprijs)
+                @Html.TextBoxFor(model => model.Aankoopprijs, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Aankoopprijs)
             </div>
         </div>

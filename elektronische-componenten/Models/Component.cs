@@ -12,6 +12,8 @@ namespace elektronische_componenten.Models
         public virtual Categorie Categorie { get; set; }
 
         public int? Aantal { get; set; }
+
+        [DataType(DataType.Currency)]
         public double? Aankoopprijs { get; set; }
 
         [Required]
