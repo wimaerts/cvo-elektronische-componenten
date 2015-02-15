@@ -1,4 +1,5 @@
 ﻿using elektronische_componenten.DAL;
+using elektronische_componenten.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
