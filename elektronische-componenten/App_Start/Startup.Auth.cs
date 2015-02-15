@@ -28,9 +28,9 @@ namespace elektronische_componenten
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "981342665211041",
+               appSecret: "9bab9bd83fd3d659a97d5626d36affcf");
 
             //app.UseGoogleAuthentication();
         }

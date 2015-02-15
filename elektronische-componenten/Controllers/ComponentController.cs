@@ -100,6 +100,7 @@ namespace elektronische_componenten.Controllers
         }
 
         // GET: Component/Create
+        [Authorize]
         public ActionResult Create()
         {
             PopulateCategoriënDropDownList();
@@ -116,9 +117,11 @@ namespace elektronische_componenten.Controllers
             ViewBag.CategorieList = new SelectList(categoriënQuery, "Id", "Naam", selectedCategorie);
         }
 
+
         // POST: Component/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(string naam, string datasheet, string aantal, string aankoopprijs, string categorieId)
@@ -158,6 +161,7 @@ namespace elektronische_componenten.Controllers
         }
 
         // GET: Component/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -177,6 +181,7 @@ namespace elektronische_componenten.Controllers
         // POST: Component/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, string naam, string datasheet, string aantal, string aankoopprijs, string categorieId)
@@ -220,6 +225,7 @@ namespace elektronische_componenten.Controllers
         }
 
         // GET: Component/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -239,6 +245,7 @@ namespace elektronische_componenten.Controllers
         }
 
         // POST: Component/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
