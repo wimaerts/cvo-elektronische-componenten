@@ -1,54 +1,72 @@
-﻿@model IEnumerable<elektronische_componenten.Models.Component>
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<elektronische_componenten.Models.Component>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Componenten";
 }
 
 <h2>Overzicht componenten</h2>
 
-<p>
-    <input type="button" class="btn btn-default" value="Component toevoegen" onclick="location.href='@Url.Action("Create", "Component")'">
-</p>
+<div class="container">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("Naam", "Index", new { sortOrder = ViewBag.NameSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Categorie", "Index", new { sortOrder = ViewBag.CategorieSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Aantal", "Index", new { sortOrder = ViewBag.AantalSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Aankoopprijs", "Index", new { sortOrder = ViewBag.PrijsSortParm })
-        </th>
-        <th></th>
-    </tr>
+    @using (Html.BeginForm("Index", "Component", FormMethod.Get))
+    {
+        <div class="row" style="margin-bottom:30px;margin-top:20px;font-weight:bold;">
+            Zoek op naam/categorie: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string) 
+            <input type="submit" value="Search" />
+        </div>
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            <a href="@item.Datasheet">
-                @Html.DisplayFor(modelItem => item.Naam)
-            </a>            
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Categorie.Naam)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Aantal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Aankoopprijs)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.ActionLink("Naam", "Index", new { sortOrder = ViewBag.NameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Categorie", "Index", new { sortOrder = ViewBag.CategorieSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Aantal", "Index", new { sortOrder = ViewBag.AantalSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Aankoopprijs", "Index", new { sortOrder = ViewBag.PrijsSortParm })
+                </th>
+                <th></th>
+            </tr>
 
-</table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@item.Datasheet">
+                            @Html.DisplayFor(modelItem => item.Naam)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Categorie.Naam)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Aantal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Aankoopprijs)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <br /> Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    </div>
+
+    <div class="row">
+        <input type="button" class="btn btn-primary" value="Component toevoegen" onclick="location.href='@Url.Action("Create", "Component")'">
+    </div>
+</div>

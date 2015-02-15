@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using elektronische_componenten.DAL;
 using elektronische_componenten.Models;
+using PagedList;
 
 namespace elektronische_componenten.Controllers
 {
@@ -16,17 +17,34 @@ namespace elektronische_componenten.Controllers
         private ComponentContext db = new ComponentContext();
 
         // GET: Component
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.CategorieSortParm = (sortOrder=="cat_asc" || String.IsNullOrEmpty(sortOrder)) ? "cat_desc" : "cat_asc";
+            ViewBag.CategorieSortParm = (sortOrder == "cat_asc" || String.IsNullOrEmpty(sortOrder)) ? "cat_desc" : "cat_asc";
             ViewBag.AantalSortParm = (sortOrder == "aantal_asc" || String.IsNullOrEmpty(sortOrder)) ? "aantal_desc" : "aantal_asc";
             ViewBag.PrijsSortParm = (sortOrder == "prijs_asc" || String.IsNullOrEmpty(sortOrder)) ? "prijs_desc" : "prijs_asc";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else 
+            { 
+                searchString = currentFilter; 
+            }
+
+            ViewBag.CurrentFilter = searchString;
 
             var componenten = from c in db.Componenten
                               select c;
 
-            switch(sortOrder)
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                componenten = componenten.Where(c => c.Naam.ToUpper().Contains(searchString.ToUpper()) ||
+                c.Categorie.Naam.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            switch (sortOrder)
             {
                 case "name_desc":
                     componenten = componenten.OrderByDescending(c => c.Naam);
@@ -54,7 +72,9 @@ namespace elektronische_componenten.Controllers
                     break;
             }
 
-            return View(componenten.ToList());
+            int pageSize = 5; 
+            int pageNumber = (page ?? 1); 
+            return View(componenten.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Component/Details/5
@@ -134,7 +154,7 @@ namespace elektronische_componenten.Controllers
         }
 
         // GET: Component/Delete/5
-        public ActionResult Delete(int? id, bool? saveChangesError=false)
+        public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
