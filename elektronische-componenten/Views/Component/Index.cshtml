@@ -11,9 +11,11 @@
 
     @using (Html.BeginForm("Index", "Component", FormMethod.Get))
     {
-        <div class="row" style="margin-bottom:30px;margin-top:20px;font-weight:bold;">
-            Zoek op naam/categorie: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string) 
-            <input type="submit" value="Search" />
+        <div class="row" style="font-weight:bold;margin-bottom:30px;">
+            Naam: @Html.TextBox("SearchString")
+            Categorie: @Html.DropDownList("categorieId", string.Empty)
+
+            <input type="submit" value="Filter" />
         </div>
     }
 
@@ -61,7 +63,7 @@
             }
         </table>
 
-        <br /> 
+        <br />
         Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) van @Model.PageCount
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 

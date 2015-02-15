@@ -18,21 +18,21 @@ namespace elektronische_componenten.Controllers
         private ComponentContext db = new ComponentContext();
 
         // GET: Component
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string naamFilter, string categorieId, string searchString, int? page)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.CategorieSortParm = (sortOrder == "cat_asc" || String.IsNullOrEmpty(sortOrder)) ? "cat_desc" : "cat_asc";
             ViewBag.AantalSortParm = (sortOrder == "aantal_asc" || String.IsNullOrEmpty(sortOrder)) ? "aantal_desc" : "aantal_asc";
             ViewBag.PrijsSortParm = (sortOrder == "prijs_asc" || String.IsNullOrEmpty(sortOrder)) ? "prijs_desc" : "prijs_asc";
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else 
-            { 
-                searchString = currentFilter; 
-            }
+            //if (searchString != null)
+            //{
+            //    page = 1;
+            //}
+            //else 
+            //{ 
+            //    searchString = naamFilter; 
+            //}
 
             ViewBag.CurrentFilter = searchString;
 
@@ -41,8 +41,13 @@ namespace elektronische_componenten.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                componenten = componenten.Where(c => c.Naam.ToUpper().Contains(searchString.ToUpper()) ||
-                c.Categorie.Naam.ToUpper().Contains(searchString.ToUpper()));
+                componenten = componenten.Where(c => c.Naam.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            if (!String.IsNullOrEmpty(categorieId))
+            {
+                int i = Convert.ToInt32(categorieId);
+                componenten = componenten.Where(c => c.Categorie.Id.Equals(i));
             }
 
             switch (sortOrder)
@@ -74,7 +79,8 @@ namespace elektronische_componenten.Controllers
             }
 
             int pageSize = 5; 
-            int pageNumber = (page ?? 1); 
+            int pageNumber = (page ?? 1);
+            PopulateCategoriënDropDownList();
             return View(componenten.ToPagedList(pageNumber, pageSize));
         }
 
