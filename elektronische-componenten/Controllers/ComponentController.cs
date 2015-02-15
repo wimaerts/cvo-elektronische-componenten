@@ -18,21 +18,21 @@ namespace elektronische_componenten.Controllers
         private ComponentContext db = new ComponentContext();
 
         // GET: Component
-        public ActionResult Index(string sortOrder, string naamFilter, string categorieId, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string naamFilter, string currentFilter, string categorieId, string searchString, int? page)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.CategorieSortParm = (sortOrder == "cat_asc" || String.IsNullOrEmpty(sortOrder)) ? "cat_desc" : "cat_asc";
             ViewBag.AantalSortParm = (sortOrder == "aantal_asc" || String.IsNullOrEmpty(sortOrder)) ? "aantal_desc" : "aantal_asc";
             ViewBag.PrijsSortParm = (sortOrder == "prijs_asc" || String.IsNullOrEmpty(sortOrder)) ? "prijs_desc" : "prijs_asc";
 
-            //if (searchString != null)
-            //{
-            //    page = 1;
-            //}
-            //else 
-            //{ 
-            //    searchString = naamFilter; 
-            //}
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = naamFilter;
+            }
 
             ViewBag.CurrentFilter = searchString;
 
@@ -112,7 +112,7 @@ namespace elektronische_componenten.Controllers
                                   orderby c.Naam
                                   select c;
 
-            ViewBag.CategorieId = new SelectList(categoriënQuery, "Id", "Naam", selectedCategorie);
+            ViewBag.CategorieList = new SelectList(categoriënQuery, "Id", "Naam", selectedCategorie);
         }
 
         // POST: Component/Create
