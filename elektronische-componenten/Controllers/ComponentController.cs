@@ -47,13 +47,20 @@ namespace elektronische_componenten.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Naam,Datasheet,Aantal,Aankoopprijs")] Component component)
+        public ActionResult Create([Bind(Include = "Naam,Datasheet,Aantal,Aankoopprijs")] Component component)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Componenten.Add(component);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Componenten.Add(component);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             return View(component);
@@ -91,11 +98,15 @@ namespace elektronische_componenten.Controllers
         }
 
         // GET: Component/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, bool? saveChangesError=false)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
             Component component = db.Componenten.Find(id);
             if (component == null)
@@ -110,10 +121,17 @@ namespace elektronische_componenten.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Component component = db.Componenten.Find(id);
-            db.Componenten.Remove(component);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Component component = db.Componenten.Find(id);
+                db.Componenten.Remove(component);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DataException)
+            {
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
         }
 
         protected override void Dispose(bool disposing)
