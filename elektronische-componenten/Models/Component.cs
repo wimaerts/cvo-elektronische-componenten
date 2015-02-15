@@ -11,15 +11,15 @@ namespace elektronische_componenten.Models
         public int Id { get; set; }
         public virtual Categorie Categorie { get; set; }
 
+        public int? Aantal { get; set; }
+        public double? Aankoopprijs { get; set; }
+
         [Required]
         public string Naam { get; set; }
 
         [DataType(DataType.Url)]
         [Display(Name = "Product link")]
-        public string Datasheet { get; set; }  
-      
-        public int Aantal { get; set; }
-        public double Aankoopprijs { get; set; }
+        public string Datasheet { get; set; }      
 
         public Component()
         {

@@ -26,8 +26,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="CategorieId">Categorie</label>
             <div class="col-md-10">
-                @Html.DropDownList("CategorieId", String.Empty)
-                @Html.ValidationMessageFor(model => model.Categorie.Id)
+                @Html.DropDownList("categorieId" , (SelectList)ViewBag.CategorieList, String.Empty, new { @class = "form-control" })
             </div>
         </div>
 

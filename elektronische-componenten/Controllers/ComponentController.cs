@@ -106,6 +106,7 @@ namespace elektronische_componenten.Controllers
             return View();
         }
 
+        // Opvullen Categorie lijst
         private void PopulateCategoriënDropDownList(object selectedCategorie = null)
         {
             var categoriënQuery = from c in db.Categoriën
@@ -120,24 +121,40 @@ namespace elektronische_componenten.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Naam,Datasheet,Aantal,Aankoopprijs")] Component component)
+        public ActionResult Create(string naam, string datasheet, string aantal, string aankoopprijs, string categorieId)
         {
-            try
+            Component component = new Component();
+            component.Naam = naam;
+
+            if (!String.IsNullOrEmpty(categorieId))
             {
-                if (ModelState.IsValid)
-                {
-                    db.Componenten.Add(component);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (RetryLimitExceededException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                int id = Convert.ToInt32(categorieId);
+
+                var categorie = from c in db.Categoriën
+                                where c.Id == id
+                                select c;
+
+                component.Categorie = categorie.FirstOrDefault();
             }
 
-            PopulateCategoriënDropDownList(component.Categorie.Id);
-            return View(component);
+            if (!String.IsNullOrEmpty(datasheet))
+            {
+                component.Datasheet = datasheet;
+            }
+
+            if (!String.IsNullOrEmpty(aantal))
+            {
+                component.Aantal = Convert.ToInt32(aantal);
+            }
+
+            if (!String.IsNullOrEmpty(aankoopprijs))
+            {
+                component.Aankoopprijs = Convert.ToDouble(aankoopprijs);
+            }
+
+            db.Componenten.Add(component);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Component/Edit/5
@@ -162,24 +179,44 @@ namespace elektronische_componenten.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Naam,Datasheet,Aantal,Aankoopprijs,CategorieId")] Component component)
+        public ActionResult Edit(string id, string naam, string datasheet, string aantal, string aankoopprijs, string categorieId)
         {
-            try
+            int componentId = Convert.ToInt32(id);
+
+            var componentQuery = from comp in db.Componenten
+                            where comp.Id == componentId
+                            select comp;
+
+            Component component = componentQuery.FirstOrDefault();
+
+            if (!String.IsNullOrEmpty(categorieId))
             {
-                if (ModelState.IsValid)
-                {
-                    db.Entry(component).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (RetryLimitExceededException)
-            {                
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                int catId = Convert.ToInt32(categorieId);
+
+                var categorie = from cat in db.Categoriën
+                                where cat.Id == catId
+                                select cat;
+
+                component.Categorie = categorie.FirstOrDefault();
             }
 
-            PopulateCategoriënDropDownList(component.Categorie.Id);
-            return View(component);
+            if (!String.IsNullOrEmpty(datasheet))
+            {
+                component.Datasheet = datasheet;
+            }
+
+            if (!String.IsNullOrEmpty(aantal))
+            {
+                component.Aantal = Convert.ToInt32(aantal);
+            }
+
+            if (!String.IsNullOrEmpty(aankoopprijs))
+            {
+                component.Aankoopprijs = Convert.ToDouble(aankoopprijs);
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Component/Delete/5
