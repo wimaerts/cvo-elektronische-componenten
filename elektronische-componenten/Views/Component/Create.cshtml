@@ -24,10 +24,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Categorie, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="CategorieId">Categorie</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Categorie.Naam)
-                @Html.ValidationMessageFor(model => model.Categorie.Naam)
+                @Html.DropDownList("CategorieId", String.Empty)
+                @Html.ValidationMessageFor(model => model.Categorie.Id)
             </div>
         </div>
 

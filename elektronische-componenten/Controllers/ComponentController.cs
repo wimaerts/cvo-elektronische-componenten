@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using elektronische_componenten.DAL;
 using elektronische_componenten.Models;
 using PagedList;
+using System.Data.Entity.Infrastructure;
 
 namespace elektronische_componenten.Controllers
 {
@@ -95,7 +96,17 @@ namespace elektronische_componenten.Controllers
         // GET: Component/Create
         public ActionResult Create()
         {
+            PopulateCategoriënDropDownList();
             return View();
+        }
+
+        private void PopulateCategoriënDropDownList(object selectedCategorie = null)
+        {
+            var categoriënQuery = from c in db.Categoriën
+                                  orderby c.Naam
+                                  select c;
+
+            ViewBag.CategorieId = new SelectList(categoriënQuery, "Id", "Naam", selectedCategorie);
         }
 
         // POST: Component/Create
@@ -114,11 +125,12 @@ namespace elektronische_componenten.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (DataException)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
+            PopulateCategoriënDropDownList(component.Categorie.Id);
             return View(component);
         }
 
