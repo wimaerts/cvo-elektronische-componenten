@@ -146,6 +146,8 @@ namespace elektronische_componenten.Controllers
             {
                 return HttpNotFound();
             }
+
+            PopulateCategoriënDropDownList(component.Categorie.Id);
             return View(component);
         }
 
@@ -154,14 +156,23 @@ namespace elektronische_componenten.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Naam,Datasheet,Aantal,Aankoopprijs")] Component component)
+        public ActionResult Edit([Bind(Include = "Id,Naam,Datasheet,Aantal,Aankoopprijs,CategorieId")] Component component)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(component).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(component).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            catch (RetryLimitExceededException)
+            {                
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
+
+            PopulateCategoriënDropDownList(component.Categorie.Id);
             return View(component);
         }
 
