@@ -14,7 +14,7 @@ namespace elektronische_componenten.Models
         public int? Aantal { get; set; }
 
         [DataType(DataType.Currency)]
-        public double? Aankoopprijs { get; set; }
+        public decimal? Aankoopprijs { get; set; }
 
         [Required]
         public string Naam { get; set; }
@@ -28,7 +28,7 @@ namespace elektronische_componenten.Models
 
         }
 
-        public Component(string naam, Categorie categorie, string datasheet, int aantal, double aankoopprijs)
+        public Component(string naam, Categorie categorie, string datasheet, int aantal, decimal aankoopprijs)
         {
             this.Naam = naam;
             this.Categorie = categorie;

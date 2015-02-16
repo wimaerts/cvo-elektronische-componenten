@@ -152,7 +152,7 @@ namespace elektronische_componenten.Controllers
 
             if (!String.IsNullOrEmpty(aankoopprijs))
             {
-                component.Aankoopprijs = Convert.ToDouble(aankoopprijs);
+                component.Aankoopprijs = Convert.ToDecimal(aankoopprijs);
             }
 
             db.Componenten.Add(component);
@@ -217,7 +217,7 @@ namespace elektronische_componenten.Controllers
 
             if (!String.IsNullOrEmpty(aankoopprijs))
             {
-                component.Aankoopprijs = Convert.ToDouble(aankoopprijs);
+                component.Aankoopprijs = Convert.ToDecimal(aankoopprijs);
             }
 
             db.SaveChanges();
