@@ -147,16 +147,23 @@ namespace elektronische_componenten.Controllers
 
             if (!String.IsNullOrEmpty(aantal))
             {
-                component.Aantal = Convert.ToInt32(aantal);
+                try
+                {
+                    component.Aantal = Convert.ToInt32(aantal);
+                }
+                catch (Exception)
+                {                    
+                    ViewBag.Error = "Ongeldig bedrag!\n";
+                }
             }
 
             if (!String.IsNullOrEmpty(aankoopprijs))
             {
                 try
                 {
-                    component.Aankoopprijs = Convert.ToDecimal(aankoopprijs);
+                    component.Aankoopprijs = Convert.ToDecimal(aankoopprijs.Replace('.', ','));
                 }
-                catch(FormatException)
+                catch (Exception)
                 {
                     ViewBag.Error = "Ongeldig bedrag!";
                 }
@@ -164,6 +171,7 @@ namespace elektronische_componenten.Controllers
 
             db.Componenten.Add(component);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
