@@ -40,3 +40,11 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.img {
+    height: 500px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../Images/1.jpg');
+}

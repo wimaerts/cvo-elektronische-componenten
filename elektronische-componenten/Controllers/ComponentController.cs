@@ -152,7 +152,14 @@ namespace elektronische_componenten.Controllers
 
             if (!String.IsNullOrEmpty(aankoopprijs))
             {
-                component.Aankoopprijs = Convert.ToDecimal(aankoopprijs);
+                try
+                {
+                    component.Aankoopprijs = Convert.ToDecimal(aankoopprijs);
+                }
+                catch(FormatException)
+                {
+                    ViewBag.Error = "Ongeldig bedrag!";
+                }
             }
 
             db.Componenten.Add(component);
