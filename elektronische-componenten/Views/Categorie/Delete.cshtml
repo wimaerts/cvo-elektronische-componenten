@@ -21,12 +21,26 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+
+            @if (ViewBag.Error == null)
+            {
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            }
+            else
+            {
+                <p>
+                    <b>@ViewBag.Error</b>
+                </p>
+                <br />
+            }
+
             @Html.ActionLink("Back to List", "Index")
         </div>
     }
 </div>
+

@@ -111,9 +111,22 @@ namespace elektronische_componenten.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Categorie categorie = db.Categoriën.Find(id);
-            db.Categoriën.Remove(categorie);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            var lstComp = from c in db.Componenten
+                          where c.Categorie.Id.Equals(categorie.Id)
+                          select c;
+            
+            if (lstComp.Count() > 0)
+            {
+                ViewBag.Error = "Deze categorie is in gebruik door 1 of meerdere componenten en kan dus niet worden verwijderd!";
+                return View(categorie);
+            }
+            else
+            {
+                db.Categoriën.Remove(categorie);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)
